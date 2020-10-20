@@ -1,0 +1,52 @@
+print("Начнем игру Крестики-Нолики \nЧтобы сделать ход, выберите число на поле")
+
+board = list(range(1, 10))
+def draw_board (board):
+    print("-"*13)
+    for i in range(3):
+        print("|", board[0+i*3], "|", board[1+i*3], "|", board[2 + i*3], "|")
+        print("-"*13)
+
+def take(token):
+    valid = False
+    while not valid:
+        answer = input("Выберите число для Вашего хода " + token + " ")
+        answer = int(answer)
+        if answer >= 1 and answer <= 9:
+            if (str(board[answer - 1]) not in "XO"):
+                board[answer - 1] = token
+                valid = True
+            else:
+                print("Эта клетка уже занята")
+        else:
+            print("Для совершения хода выберите число от 1 до 9")
+
+def win(board):
+    win_result = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+    for i in win_result:
+        if board[i[0]] == board[i[1]] == board[i[2]]:
+            return board[i[0]]
+    return False
+
+def main(board):
+    counter = 0
+    winner = False
+    while not winner:
+        draw_board(board)
+        if counter % 2 == 0:
+            take("X")
+        else:
+            take("O")
+        counter += 1
+        if counter > 4:
+            check = win(board)
+            if check:
+                print(check, "выиграл!")
+                winner = True
+                break
+        if counter == 9:
+            print("Ничья!")
+            break
+    draw_board(board)
+
+main(board)
